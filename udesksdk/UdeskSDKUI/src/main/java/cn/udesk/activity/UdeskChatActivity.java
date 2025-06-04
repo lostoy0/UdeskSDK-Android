@@ -161,6 +161,7 @@ public class UdeskChatActivity extends UdeskBaseActivity implements IEmotionSele
     private long IM_LEAVE_MSG_INTERVAL = 2 * 60 * 1000; // 对话留言时，请求客服的间隔时间
     private final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 101;
     private final int SELECT_IMAGE_ACTIVITY_REQUEST_CODE = 102;
+    private final int SELECT_IMAGE_ACTIVITY_REQUEST_CODE_2 = 1022;
     private final int SELECT_FILE_OPTION_REQUEST_CODE = 104;
     private final int SELECT_LOCATION_OPTION_REQUEST_CODE = 105;
     private final int SELECT_UDESK_IMAGE_ACTIVITY_REQUEST_CODE = 106;
@@ -1649,13 +1650,13 @@ public class UdeskChatActivity extends UdeskBaseActivity implements IEmotionSele
     //点击相册入口
     public void clickPhoto() {
         try {
-            if (Build.VERSION.SDK_INT < 23) {
+            if (Build.VERSION.SDK_INT < 23 || Build.VERSION.SDK_INT >= 33) {
                 selectPhoto();
             } else {
                 String[] permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
-                if (Build.VERSION.SDK_INT >= 33) {
+                /*if (Build.VERSION.SDK_INT >= 33) {
                     permissions = new String[]{Manifest.permission.READ_MEDIA_IMAGES, Manifest.permission.READ_MEDIA_VIDEO};
-                }
+                }*/
 
 //                String clickPhoto = PreferenceHelper.readString(getApplicationContext(), "udeks_permission", "clickPhoto");
                 boolean isNeedShowAppMarkDialog = XPermissionUtils.isNeedShowAppMarkDialog(UdeskChatActivity.this, permissions);
@@ -1692,13 +1693,13 @@ public class UdeskChatActivity extends UdeskBaseActivity implements IEmotionSele
     //点击文件入口
     public void clickFile() {
         try {
-            if (Build.VERSION.SDK_INT < 23) {
+            if (Build.VERSION.SDK_INT < 23 || Build.VERSION.SDK_INT >= 33) {
                 selectFile();
             } else {
                 String[] permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
-                if (Build.VERSION.SDK_INT >= 33) {
+                /*if (Build.VERSION.SDK_INT >= 33) {
                     permissions = new String[]{Manifest.permission.READ_MEDIA_AUDIO, Manifest.permission.READ_MEDIA_IMAGES, Manifest.permission.READ_MEDIA_VIDEO};
-                }
+                }*/
 //                String clickFile = PreferenceHelper.readString(getApplicationContext(), "udeks_permission", "clickFile");
                 boolean isNeedShowAppMarkDialog = XPermissionUtils.isNeedShowAppMarkDialog(UdeskChatActivity.this, permissions);
                 if (isNeedShowAppMarkDialog){
@@ -1923,6 +1924,45 @@ public class UdeskChatActivity extends UdeskBaseActivity implements IEmotionSele
                     }
                 }
 
+            } else if (SELECT_IMAGE_ACTIVITY_REQUEST_CODE_2 == requestCode) {
+                if (resultCode != Activity.RESULT_OK || data == null) {
+                    return;
+                }
+
+                List<Uri> selectedUris = new ArrayList<>();
+
+                if (data.getClipData() != null) {
+                    // 处理多选
+                    ClipData clipData = data.getClipData();
+                    for (int i = 0; i < clipData.getItemCount(); i++) {
+                        selectedUris.add(clipData.getItemAt(i).getUri());
+                    }
+                } else if (data.getData() != null) {
+                    // 处理单选
+                    selectedUris.add(data.getData());
+                }
+                for (Uri uri : selectedUris) {
+                    try {
+                        String path = UdeskUtil.getFilePath(getApplicationContext(), uri);
+                        final String pictureType = UdeskUtil.getMIMEType(getApplicationContext(), uri);
+                        final int mediaMimeType = UdeskUtil.isPictureType(pictureType);
+                        if (mediaMimeType == UdeskUtil.TYPE_SHORT_VIDEO) {
+                            long size = UdeskUtil.getFileSizeQ(this.getApplicationContext(), path);
+                            if (size >= 30 * 1000 * 1000) {
+                                UdeskUtils.showToast(getApplicationContext(), getResources().getString(R.string.udesk_file_to_large));
+                                break;
+                            }
+                            udeskViewMode.sendFileMessage(getApplicationContext(), path, UdeskConst.ChatMsgTypeString.TYPE_SHORT_VIDEO);
+                        } else if (mediaMimeType == UdeskUtil.TYPE_IMAGE) {
+                            udeskViewMode.sendFileMessage(getApplicationContext(), path, UdeskConst.ChatMsgTypeString.TYPE_IMAGE);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } catch (OutOfMemoryError error) {
+                        error.printStackTrace();
+                    }
+                }
+
             } else if (SELECT_FILE_OPTION_REQUEST_CODE == requestCode) {
                 if (resultCode != Activity.RESULT_OK || data == null) {
                     return;
@@ -2130,6 +2170,10 @@ public class UdeskChatActivity extends UdeskBaseActivity implements IEmotionSele
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
                 intent.setType("image/*");
                 startActivityForResult(intent, SELECT_IMAGE_ACTIVITY_REQUEST_CODE);
+            } else if (Build.VERSION.SDK_INT >= 33) {
+                Intent intent = new Intent(MediaStore.ACTION_PICK_IMAGES);
+                intent.putExtra(MediaStore.EXTRA_PICK_IMAGES_MAX, 9);
+                startActivityForResult(intent, SELECT_IMAGE_ACTIVITY_REQUEST_CODE_2);
             } else {
                 Intent intent = new Intent();
                 intent.setClass(UdeskChatActivity.this, PhotoSelectorActivity.class);
@@ -2173,16 +2217,41 @@ public class UdeskChatActivity extends UdeskBaseActivity implements IEmotionSele
 
     //启动手机默认的选择mp4文件
     private void selectFile() {
-        try {
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-            intent.setType("*/*");
-            Intent wrapperIntent = Intent.createChooser(intent, null);
-            startActivityForResult(wrapperIntent, SELECT_FILE_OPTION_REQUEST_CODE);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } catch (OutOfMemoryError error) {
-            error.printStackTrace();
+        if (Build.VERSION.SDK_INT < 23) {
+            try {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.setType("*/*");
+                Intent wrapperIntent = Intent.createChooser(intent, null);
+                startActivityForResult(wrapperIntent, SELECT_FILE_OPTION_REQUEST_CODE);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } catch (OutOfMemoryError error) {
+                error.printStackTrace();
+            }
+        } else {
+            try {
+                // Build.VERSION.SDK_INT >= 33
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                intent.setType("*/*");
+                // 设置可选文件类型限制（可选）
+                /*String[] mimeTypes = {
+                        "application/pdf", // PDF 文件
+                        "application/msword", // DOC
+                        "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // DOCX
+                        "application/vnd.ms-excel", // XLS
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // XLSX
+                        "text/plain", // 文本文件
+                        "image/*", // 所有图片
+                        "audio/*", // 所有音频
+                        "video/*" // 所有视频
+                };
+                intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);*/
+
+                startActivityForResult(intent, SELECT_FILE_OPTION_REQUEST_CODE);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

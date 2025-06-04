@@ -28,7 +28,7 @@ public class UdeskUseGuideActivity extends Activity {
         customer_token = intent.getStringExtra("customer_token");
     }
 
-    public  void onClick(View v){
+    public void onClick(View v) {
 
 
         String rid = JPushInterface.getRegistrationID(getApplicationContext());
@@ -59,15 +59,17 @@ public class UdeskUseGuideActivity extends Activity {
             PreferenceHelper.write(getApplicationContext(), "init_base_name",
                     "sdktoken", "");
             PreferenceHelper.write(getApplicationContext(), UdeskConst.SharePreParams.Udesk_Sharepre_Name,
-                    UdeskConst.SharePreParams.Udesk_Menu_Id,"");
+                    UdeskConst.SharePreParams.Udesk_Menu_Id, "");
             PreferenceHelper.write(getApplicationContext(), UdeskConst.SharePreParams.Udesk_Sharepre_Name,
-                    UdeskConst.SharePreParams.Udesk_Group_Id,"");
+                    UdeskConst.SharePreParams.Udesk_Group_Id, "");
             PreferenceHelper.write(getApplicationContext(), UdeskConst.SharePreParams.Udesk_Sharepre_Name,
-                    UdeskConst.SharePreParams.Udesk_Agent_Id,"");
+                    UdeskConst.SharePreParams.Udesk_Agent_Id, "");
             Intent initIntent = new Intent();
             initIntent.setClass(UdeskUseGuideActivity.this, UdeskInitKeyActivity.class);
             startActivity(initIntent);
             finish();
+        } else if (v.getId() == R.id.btn_test) {
+            SelectPhotoFileActivity.start(this);
         }
 
     }

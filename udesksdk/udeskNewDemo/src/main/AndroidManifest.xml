@@ -24,9 +24,9 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+    <!--<uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />-->
 
 
     <application
@@ -67,6 +67,10 @@
         </activity>
 
         <activity android:name="udesk.sdk.demo.maps.SearchPositionActivity"
+            android:theme="@style/Udesk_Theme">
+        </activity>
+
+        <activity android:name=".activity.SelectPhotoFileActivity"
             android:theme="@style/Udesk_Theme">
         </activity>
 

@@ -172,10 +172,11 @@ public class PhotoSelectorActivity extends FragmentActivity implements View.OnCl
             if (Build.VERSION.SDK_INT < 23) {
                 readLocalMedia();
             } else {
+                // Build.VERSION.SDK_INT < 33
                 String[] permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
-                if (Build.VERSION.SDK_INT >= 33) {
+                /*if (Build.VERSION.SDK_INT >= 33) {
                     permissions = new String[]{Manifest.permission.READ_MEDIA_IMAGES, Manifest.permission.READ_MEDIA_VIDEO};
-                }
+                }*/
 //                String clickPhoto = PreferenceHelper.readString(getApplicationContext(), "udeks_permission", "clickPhoto");
                 boolean isNeedShowAppMarkDialog = XPermissionUtils.isNeedShowAppMarkDialog(PhotoSelectorActivity.this, permissions);
                 if (isNeedShowAppMarkDialog){
