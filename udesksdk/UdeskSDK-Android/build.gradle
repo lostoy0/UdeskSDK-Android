@@ -1,0 +1,27 @@
+plugins {
+    id 'com.android.library'
+    id 'com.kezong.fat-aar'
+}
+
+android {
+    namespace 'com.safex.udesksdk_android'
+    compileSdk 34
+
+    defaultConfig {
+        minSdk 21
+    }
+
+    // 自定义AAR文件名
+    libraryVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "UdeskSDK-Android_v5.4.5.aar"
+        }
+    }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.4.0'
+    embed project(':udeskvideo')
+    embed project(':udeskasr')
+    embed project(':UdeskSDKUI')
+}

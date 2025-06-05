@@ -1943,7 +1943,7 @@ public class UdeskChatActivity extends UdeskBaseActivity implements IEmotionSele
                 }
                 for (Uri uri : selectedUris) {
                     try {
-                        String path = UdeskUtil.getFilePath(getApplicationContext(), uri);
+                        String path = UdeskUtil.getFilePath33(getApplicationContext(), uri).getPath();
                         final String pictureType = UdeskUtil.getMIMEType(getApplicationContext(), uri);
                         final int mediaMimeType = UdeskUtil.isPictureType(pictureType);
                         if (mediaMimeType == UdeskUtil.TYPE_SHORT_VIDEO) {
