@@ -10,6 +10,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/UdeskSDK-Android" />
             <option value="$PROJECT_DIR$/UdeskSDKUI" />
             <option value="$PROJECT_DIR$/udeskNewDemo" />
             <option value="$PROJECT_DIR$/udeskasr" />

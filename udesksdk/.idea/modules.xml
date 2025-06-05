@@ -3,6 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/udesksdk.iml" filepath="$PROJECT_DIR$/udesksdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/UdeskSDK-Android/udesksdk.UdeskSDK-Android.iml" filepath="$PROJECT_DIR$/.idea/modules/UdeskSDK-Android/udesksdk.UdeskSDK-Android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/UdeskSDK-Android/udesksdk.UdeskSDK-Android.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/UdeskSDK-Android/udesksdk.UdeskSDK-Android.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/UdeskSDK-Android/udesksdk.UdeskSDK-Android.main.iml" filepath="$PROJECT_DIR$/.idea/modules/UdeskSDK-Android/udesksdk.UdeskSDK-Android.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/UdeskSDK-Android/udesksdk.UdeskSDK-Android.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/UdeskSDK-Android/udesksdk.UdeskSDK-Android.unitTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/UdeskSDKUI/udesksdk.UdeskSDKUI.iml" filepath="$PROJECT_DIR$/.idea/modules/UdeskSDKUI/udesksdk.UdeskSDKUI.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/UdeskSDKUI/udesksdk.UdeskSDKUI.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/UdeskSDKUI/udesksdk.UdeskSDKUI.androidTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/UdeskSDKUI/udesksdk.UdeskSDKUI.main.iml" filepath="$PROJECT_DIR$/.idea/modules/UdeskSDKUI/udesksdk.UdeskSDKUI.main.iml" />
