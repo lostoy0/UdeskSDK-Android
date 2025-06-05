@@ -2217,7 +2217,7 @@ public class UdeskChatActivity extends UdeskBaseActivity implements IEmotionSele
 
     //启动手机默认的选择mp4文件
     private void selectFile() {
-        if (Build.VERSION.SDK_INT < 23) {
+        if (Build.VERSION.SDK_INT < 33) {
             try {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
