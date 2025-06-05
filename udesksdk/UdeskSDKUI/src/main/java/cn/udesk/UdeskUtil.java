@@ -53,6 +53,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.net.URI;
@@ -2267,5 +2268,33 @@ public class UdeskUtil {
             ex.printStackTrace();
             return "";
         }
+    }
+
+    public static File getFilePath33(Context context, Uri uri) {
+        // 获取文件名
+        String fileName = getFileName(context, uri);
+        if (fileName == null) fileName = "file_" + System.currentTimeMillis();
+
+        // 在私有目录创建目标文件
+        String directoryPath = context.getFilesDir() + File.separator + UdeskConst.EXTERNAL_FOLDER + File.separator + "files";
+        File file = new File(directoryPath);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        File outputFile = new File(directoryPath, fileName);
+
+        try (InputStream input = context.getContentResolver().openInputStream(uri);
+             OutputStream output = new FileOutputStream(outputFile)) {
+
+            byte[] buffer = new byte[4 * 1024];
+            int bytesRead;
+            while ((bytesRead = input.read(buffer)) != -1) {
+                output.write(buffer, 0, bytesRead);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return outputFile;
     }
 }

@@ -26,6 +26,13 @@ android {
 
     dexOptions {
     }
+
+    // 自定义AAR文件名
+    libraryVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "UdeskSDKUI_v5.4.5.aar"
+        }
+    }
 }
 
 

@@ -1970,7 +1970,12 @@ public class UdeskChatActivity extends UdeskBaseActivity implements IEmotionSele
                 Uri mImageCaptureUri = data.getData();
                 if (mImageCaptureUri != null) {
                     try {
-                        String path = UdeskUtil.getFilePath(getApplicationContext(), mImageCaptureUri);
+                        String path;
+                        if (Build.VERSION.SDK_INT >= 33) {
+                            path = UdeskUtil.getFilePath33(getApplicationContext(), mImageCaptureUri).getPath();
+                        } else {
+                            path = UdeskUtil.getFilePath(getApplicationContext(), mImageCaptureUri);
+                        }
                         if (this.getWindow() != null && this.getWindow().getDecorView().getWindowToken() != null && UdeskUtil.isGpsNet(getApplicationContext())) {
                             toGpsNetView(true, null, path);
                             return;
