@@ -38,6 +38,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.WindowCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
@@ -340,6 +341,7 @@ public class UdeskChatActivity extends UdeskBaseActivity implements IEmotionSele
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
+            WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
             mHandler = new MyHandler(this);
             initUdeskViewMode();
             UdeskUtils.resetTime();

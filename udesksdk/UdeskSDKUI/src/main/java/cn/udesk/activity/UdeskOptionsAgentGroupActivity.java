@@ -8,6 +8,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.core.view.WindowCompat;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +52,7 @@ public class UdeskOptionsAgentGroupActivity extends UdeskBaseActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
+            WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
             UdeskUtil.setOrientation(this);
             setContentView(R.layout.udesk_options_agentgroup_view);
             initView();

@@ -48,4 +48,5 @@ dependencies {
     implementation group: 'org.ccil.cowan.tagsoup', name: 'tagsoup', version: '1.2.1'
     implementation files('libs/udesk-asmack-8-4.0.6.jar')
     api files('libs/udesk_sdk_5.4.5.jar')
+    implementation "androidx.core:core:1.12.0"
 }
